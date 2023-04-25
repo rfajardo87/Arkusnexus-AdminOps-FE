@@ -1,5 +1,6 @@
 // import
 import Dashboard from "views/Dashboard/Dashboard";
+import Usuario from "views/Dashboard/Usuario";
 import Tables from "views/Dashboard/Tables";
 import Billing from "views/Dashboard/Billing";
 import RTLPage from "views/Dashboard/RTL";
@@ -18,6 +19,14 @@ import {
 } from "components/Icons/Icons";
 
 var dashRoutes = [
+  {
+    path: "/usuario",
+    name: "Usuario",
+    rtlName: "لوحة القيادة",
+    icon: <PersonIcon color="inherit" />,
+    component: Usuario,
+    layout: "/admin",
+  },
   {
     path: "/dashboard",
     name: "Dashboard",
