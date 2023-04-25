@@ -5,13 +5,12 @@ import {
   Tab,
   TabList,
   TabPanels,
-  TabPanel,
 } from "@chakra-ui/react";
 import Card from "components/Card/Card.js";
 
-function Usuario({ tabs, children }) {
+function TabContainer({ tabs, children , style={}}) {
   return (
-    <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
+    <Flex direction="column" pt={{ base: "120px", md: "75px" }} style={style}>
       <Card>
         <Tabs>
           <TabList>
@@ -26,4 +25,4 @@ function Usuario({ tabs, children }) {
   );
 }
 
-export default Usuario;
+export default TabContainer;
