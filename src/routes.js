@@ -1,12 +1,16 @@
 // import
 import Dashboard from "views/Dashboard/Dashboard";
 import Usuario from "views/Dashboard/Usuario";
+import Cuenta from "views/Dashboard/Cuenta";
 import Tables from "views/Dashboard/Tables";
 import Billing from "views/Dashboard/Billing";
 import RTLPage from "views/Dashboard/RTL";
 import Profile from "views/Dashboard/Profile";
 import SignIn from "views/Auth/SignIn.js";
 import SignUp from "views/Auth/SignUp.js";
+
+
+import FA from "components/Icons/FA";
 
 import {
   HomeIcon,
@@ -25,6 +29,14 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: <PersonIcon color="inherit" />,
     component: Usuario,
+    layout: "/admin",
+  },
+  {
+    path: "/cuenta",
+    name: "Cuenta",
+    rtlName: "لوحة القيادة",
+    icon: <FA icon={"bank"} />,
+    component: Cuenta,
     layout: "/admin",
   },
   {

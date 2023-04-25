@@ -16,7 +16,7 @@ function Usuario({ tabs, children }) {
         <Tabs>
           <TabList>
             {tabs.map((item) => (
-              <Tab>{item}</Tab>
+              <Tab key={item}>{item}</Tab>
             ))}
           </TabList>
           <TabPanels>{children}</TabPanels>
