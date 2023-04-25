@@ -2,6 +2,7 @@ import React from "react";
 import { TabPanel } from "@chakra-ui/react";
 import TabContainer from "components/TabContainer";
 import Lista from "./Lista";
+import Form from "./Form";
 
 export default function () {
   return (
@@ -9,7 +10,9 @@ export default function () {
       <TabPanel>
         <Lista />
       </TabPanel>
-      <TabPanel>NUevo</TabPanel>
+      <TabPanel>
+        <Form/>
+      </TabPanel>
     </TabContainer>
   );
 }
