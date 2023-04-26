@@ -6,9 +6,8 @@ import Tables from "views/Dashboard/Tables";
 import Billing from "views/Dashboard/Billing";
 import RTLPage from "views/Dashboard/RTL";
 import Profile from "views/Dashboard/Profile";
-import SignIn from "views/Auth/SignIn.js";
+import SigninApp from "views/Auth/Signin/index";
 import SignUp from "views/Auth/SignUp.js";
-
 
 import FA from "components/Icons/FA";
 
@@ -91,7 +90,7 @@ var dashRoutes = [
         name: "Sign In",
         rtlName: "لوحة القيادة",
         icon: <DocumentIcon color="inherit" />,
-        component: SignIn,
+        component: SigninApp,
         layout: "/auth",
       },
       {
