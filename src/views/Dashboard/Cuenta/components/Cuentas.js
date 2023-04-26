@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, useToast } from "@chakra-ui/react";
 import Table from "components/TableGeneral";
 import FA from "components/Icons/FA";
 import useAxios from "shared/hooks/useAxios";
+import { CuentaListContext } from "shared/context/cuenta";
 
 export default function Cuentas() {
-  const [data, setData] = useState([]);
   const { req } = useAxios();
   const toast = useToast();
+  const { cuentas, setCuentas } = useContext(CuentaListContext);
 
   const reqCuentas = async () => {
     try {
       const rsp = await req.get("/v1/cuenta");
       const cuentas = await rsp.data;
-      setData(cuentas);
+      setCuentas(cuentas);
     } catch (error) {
       console.log(error);
     }
@@ -34,8 +35,8 @@ export default function Cuentas() {
     }
   };
 
-  const cuentaFormato = (usuarios) =>
-    usuarios.map((usuario) => ({
+  const cuentaFormato = (cuentas) =>
+    cuentas.map((usuario) => ({
       ...usuario,
       responsable: usuario["Responsable"].nombre,
       cliente: usuario["Cliente"].nombre,
@@ -58,7 +59,7 @@ export default function Cuentas() {
     }));
 
   useEffect(() => {
-    if (!data.length) {
+    if (!cuentas.length) {
       reqCuentas();
     }
   }, []);
@@ -66,7 +67,7 @@ export default function Cuentas() {
   return (
     <Table
       headers={["nombre", "cliente", "responsable", "inhabilitar"]}
-      rows={cuentaFormato(data)}
+      rows={cuentaFormato(cuentas)}
     ></Table>
   );
 }
