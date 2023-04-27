@@ -5,8 +5,9 @@ import Footer from "components/Footer/Footer.js";
 // Layout components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Sidebar from "components/Sidebar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
+import Cookies from "js-cookie";
 import routes from "routes.js";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -18,14 +19,39 @@ import FixedPlugin from "../components/FixedPlugin/FixedPlugin";
 import MainPanel from "../components/Layout/MainPanel";
 import PanelContainer from "../components/Layout/PanelContainer";
 import PanelContent from "../components/Layout/PanelContent";
-import PrivateRoute from "components/Auth/PrivateRoute";
+import useAxios from "shared/hooks/useAxios";
 
 export default function Dashboard(props) {
   const { ...rest } = props;
   // states and functions
   const [sidebarVariant, setSidebarVariant] = useState("transparent");
   const [fixed, setFixed] = useState(false);
+  const [rutas, setRutas] = useState([]);
+  const { req } = useAxios();
   // functions for changing the states from components
+  const moduloByRol = async (routes) => {
+    try {
+      const info = JSON.parse(Cookies.get("info"));
+      const roles = await req.get(`/v1/usuario/${info.id}/roles`);
+      const role_list = await roles.data.map((rol) => rol.rol_id).join("");
+      const rsp = await req.get(`/v1/rolmodulo/${role_list}`);
+      const mod_list = await rsp.data.modulos.map((m) => m.nombre);
+      const rutas_list = routes.filter((prop) => mod_list.includes(prop.name));
+      const rutas_sort = rutas_list
+        .map((ruta) => {
+          if (ruta.views) {
+            ruta.views = ruta.views
+              .filter((view) => mod_list.includes(view.name))
+              .sort((a, b) => a.order - b.order);
+          }
+          return ruta;
+        })
+        .sort((a, b) => a.order - b.order);
+      setRutas(rutas_sort);
+    } catch (error) {
+      console.error("error", error);
+    }
+  };
   const getRoute = () => {
     return window.location.pathname !== "/admin/full-screen-maps";
   };
@@ -96,11 +122,16 @@ export default function Dashboard(props) {
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
   document.documentElement.dir = "ltr";
+
+  useEffect(() => {
+    moduloByRol(routes);
+  }, []);
+
   // Chakra Color Mode
   return (
     <ChakraProvider theme={theme} resetCss={false}>
       <Sidebar
-        routes={routes}
+        routes={rutas}
         logoText={"PURITY UI DASHBOARD"}
         display="none"
         sidebarVariant={sidebarVariant}
@@ -116,8 +147,8 @@ export default function Dashboard(props) {
           <AdminNavbar
             onOpen={onOpen}
             logoText={"PURITY UI DASHBOARD"}
-            brandText={getActiveRoute(routes)}
-            secondary={getActiveNavbar(routes)}
+            brandText={getActiveRoute(rutas)}
+            secondary={getActiveNavbar(rutas)}
             fixed={fixed}
             {...rest}
           />
@@ -126,7 +157,7 @@ export default function Dashboard(props) {
           <PanelContent>
             <PanelContainer>
               <Switch>
-                {getRoutes(routes)}
+                {getRoutes(rutas)}
                 <Redirect from="/admin" to="/admin/dashboard" />
               </Switch>
             </PanelContainer>
@@ -135,13 +166,13 @@ export default function Dashboard(props) {
         <Footer />
         <Portal>
           <FixedPlugin
-            secondary={getActiveNavbar(routes)}
+            secondary={getActiveNavbar(rutas)}
             fixed={fixed}
             onOpen={onOpen}
           />
         </Portal>
         <Configurator
-          secondary={getActiveNavbar(routes)}
+          secondary={getActiveNavbar(rutas)}
           isOpen={isOpen}
           onClose={onClose}
           isChecked={fixed}

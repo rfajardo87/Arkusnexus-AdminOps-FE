@@ -12,20 +12,22 @@ export default function SigninApp() {
   const { req } = useAxios();
   const toast = useToast();
   const { data, setToken } = useContext(TokenContext);
+  const [complete, setComplete] = useState(false);
 
   const signAction = async () => {
     try {
-      const data = await req.post("/v1/auth", {
+      const data = await req.post("/auth", {
         password,
         correo,
       });
       const token = await data.data;
       setToken(token);
       Object.entries(token).map((pair) => {
-        if (["isAuth", "token", "rol"].includes(pair[0])) {
+        if (["isAuth", "token", "info"].includes(pair[0])) {
           Cookie.set(pair[0], pair[1], { expires: 1 });
         }
       });
+      setComplete(true);
     } catch (error) {
       toast({
         status: "error",
@@ -34,7 +36,7 @@ export default function SigninApp() {
     }
   };
 
-  return data && data.isAuth ? (
+  return data && data.isAuth && complete ? (
     <Redirect to={"/admin/dashboard"} />
   ) : (
     <SignIn

@@ -29,6 +29,7 @@ var dashRoutes = [
     icon: <PersonIcon color="inherit" />,
     component: Usuario,
     layout: "/admin",
+    order: 3,
   },
   {
     path: "/cuenta",
@@ -37,6 +38,7 @@ var dashRoutes = [
     icon: <FA icon={"bank"} />,
     component: Cuenta,
     layout: "/admin",
+    order: 2,
   },
   {
     path: "/dashboard",
@@ -45,6 +47,7 @@ var dashRoutes = [
     icon: <HomeIcon color="inherit" />,
     component: Dashboard,
     layout: "/admin",
+    order: 1,
   },
   {
     path: "/tables",
@@ -71,19 +74,20 @@ var dashRoutes = [
     layout: "/rtl",
   },
   {
-    name: "ACCOUNT PAGES",
+    name: "GENERAL",
     category: "account",
     rtlName: "صفحات",
     state: "pageCollapse",
     views: [
       {
         path: "/profile",
-        name: "Profile",
+        name: "Perfil",
         rtlName: "لوحة القيادة",
         icon: <PersonIcon color="inherit" />,
         secondaryNavbar: true,
         component: Profile,
         layout: "/admin",
+        order: 0,
       },
       {
         path: "/signin",
@@ -92,6 +96,7 @@ var dashRoutes = [
         icon: <DocumentIcon color="inherit" />,
         component: SigninApp,
         layout: "/auth",
+        order: 1,
       },
       {
         path: "/signup",
